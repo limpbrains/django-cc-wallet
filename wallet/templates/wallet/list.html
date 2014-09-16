@@ -1,0 +1,37 @@
+{% extends "wallet/base.html" %}
+{% load humanize %}
+
+{% block title %}List of wallets{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h1>Wallets list</h1>
+    <a class="btn btn-default" href="{% url "wallet_create" %}">Create</a>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Label</th>
+          <th>Currency</th>
+          <th>Balance</th>
+          <th>Holded</th>
+          <th>Unconfirmed</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for w in object_list %}
+          <tr>
+            <td>
+              <a href="{{ w.get_absolute_url }}">
+                {{ w.wallet.label }}
+              </a>
+            </td>
+            <td>{{ w.wallet.currency }}</td>
+            <td>{{ w.wallet.balance|floatformat:8|intcomma }}</td>
+            <td>{{ w.wallet.holded|floatformat:8|intcomma }}</td>
+            <td>{{ w.wallet.unconfirmed|floatformat:8|intcomma }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

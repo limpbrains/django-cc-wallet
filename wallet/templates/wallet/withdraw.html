@@ -1,0 +1,13 @@
+{% extends "wallet/base.html" %}
+
+{% block title %}Create withdraw transaction{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h1>Create withdraw transaction</h1>
+    <form action="" method="post">{% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Create" />
+    </form>
+  </div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "wallet/base.html" %}
+{% load humanize %}
+{% load qr_tags %}
+
+{% block title %}List of wallets{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-9">
+        <h1>wallet: "{{ object.wallet.label }}"
+          <a class="btn btn-default" href="{% url "wallet_withdraw" object.id %}">Withdraw</a>
+        </h1>
+        <h3>{{ object.wallet.get_address.address }}</h3>
+        <table class="table">
+          <tbody>
+            <tr>
+              <td>Balance</td>
+              <td>{{ object.wallet.balance|floatformat:8|intcomma }}</td>
+            </tr>
+            <tr>
+              <td>Holded</td>
+              <td>{{ object.wallet.holded|floatformat:8|intcomma }}</td>
+            </tr>
+            <tr>
+              <td>Unconfirmed</td>
+              <td>{{ object.wallet.unconfirmed|floatformat:8|intcomma }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-3">
+        {% if object.wallet.get_address.address %}
+          {% qr_from_text object.wallet.get_address.address "size" %}
+        {% endif %}
+      </div>
+    </div>
+    <h3>Transacions:</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Balance</th>
+          <th>Holded</th>
+          <th>Unconfirmed</th>
+          <th>Description</th>
+          <th>Txid</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for o in object.wallet.get_operations %}
+          <tr>
+            <td>{{ o.created }}</td>
+            <td>{{ o.balance|floatformat:8|intcomma }}</td>
+            <td>{{ o.holded|floatformat:8|intcomma }}</td>
+            <td>{{ o.unconfirmed|floatformat:8|intcomma }}</td>
+            <td>{{ o.description }}</td>
+            <td>{{ o.reason.txid }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
