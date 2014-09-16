@@ -1,3 +1,4 @@
 *.pyc
 /*.egg-info/
+dist/
 wallet/static/wallet/lib
